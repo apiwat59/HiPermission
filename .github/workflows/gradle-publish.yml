@@ -1,28 +1,58 @@
-name: Build for JitPack
+name: Android Library Build
 
 on:
-  pull_request:
   push:
-    branches:
-      - main
-  workflow_dispatch: # ✅ ให้กด Run เองได้ด้วย
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # ให้สามารถรันด้วยตนเองได้จาก GitHub UI
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '8'
           distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 5.4.1
+
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew :library:assembleRelease
+
+      - name: Upload AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-release
+          path: library/build/outputs/aar/library-release.aar
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download AAR
+        uses: actions/download-artifact@v4
+        with:
+          name: library-release
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: library-release.aar
+          generate_release_notes: true
