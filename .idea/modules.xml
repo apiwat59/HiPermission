@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HiPermission.iml" filepath="$PROJECT_DIR$/HiPermission.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HiPermission.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HiPermission.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/HiPermission.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/HiPermission.library.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
